@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ml242/nys#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "mysql": "^2.11.1"
   }
 }
