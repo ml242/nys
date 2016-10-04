@@ -1,0 +1,22 @@
+{
+  "name": "nys_historic_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ml242/nys.git"
+  },
+  "author": "matt lucas, katherine santiago",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ml242/nys/issues"
+  },
+  "homepage": "https://github.com/ml242/nys#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
