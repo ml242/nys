@@ -7,9 +7,12 @@ var connection = mysql.createConnection({
 			user: 'root',
 			port: 3306,
 			password: '',
-			database: 'nys_history',
+			database: 'places',
 			multipleStatements: true
 });
+
+// Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
+
 
 connection.connect(function(err) {
   if (err) {
