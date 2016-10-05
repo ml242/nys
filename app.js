@@ -21,10 +21,31 @@ connection.connect(function(err) {
   }
 
   console.log('connected as id ' + connection.threadId);
+
+
+  var query = 'SELECT * FROM places';
+  connection.query(query, function(err, results, fields) {
+    if (err)
+      return callback(err, null);
+
+    console.log('The query-result is: ', results[0]);
+
+    // wrap result-set as json
+    json = JSON.stringify(results);
+
+  })
+
+
+
+
+
+
+
+
 });
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.send(json);
 });
 
 app.listen(3000, function () {
