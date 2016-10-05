@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
 			user: 'root',
 			port: 3306,
 			password: '',
-			database: 'places',
+			database: 'nys_history',
 			multipleStatements: true
 });
 
