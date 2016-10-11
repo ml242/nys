@@ -1,0 +1,13 @@
+CREATE TABLE places (
+  name char(128) NOT NULL,
+  county char(64) NOT NULL,
+  registered DATE NOT NULL,
+  national_number char(64) NOT NULL,
+  long char(64) NOT NULL,
+  lat char(64) NOT NULL,
+  loc char(64) NOT NULL,
+  id SERIAL PRIMARY KEY
+);
+
+COPY places(name, county, registered, national_number, long, lat, loc)
+FROM '/Users/mattlucas/dev/nys_historic_app/data/National_Register_of_Historic_Places.csv' DELIMITER ';' CSV;

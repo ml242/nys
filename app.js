@@ -3,40 +3,45 @@ var browserify = require('browserify');
 var React = require('react');
 var reactdom = require('react-dom')
 var jsx = require('node-jsx');
-var mysql      = require('mysql');
+var pg      = require('pg');
 
+var client = new pg.Client();
 var app = express();
 
 jsx.install();
 
 
-var connection = mysql.createConnection({
+var config = {
   		host: 'localhost',
 			user: 'root',
-			port: 3306,
+			port: 5432,
 			password: '',
 			database: 'nys_history',
-			multipleStatements: true
-});
+			multipleStatements: true,
+      max: 10,
+      idleTimeoutMills: 300000
+};
 
 // Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
 
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
+var pool = new pg.Pool(config);
 
-  console.log('connected as id ' + connection.threadId);
-  var query = 'SELECT * FROM places';
-  connection.query(query, function(err, results, fields) {
-    if (err) {
-      return callback(err, null);
+pool.connect(function(err, client, done) {
+  if(err) {
+    return console.error('error fetching client from pool', err);
+  }
+  client.query('SELECT * FROM places', function(err, result) {
+    //call `done()` to release the client back to the pool 
+    done();
+ 
+    if(err) {
+      return console.error('error running query', err);
     }
-    console.log('The query-result is: ', results[0]);
-    json = JSON.stringify(results);
-  })
+    console.log(result.rows[0].number);
+    //output: 1 
+  });
 });
+ 
 
 // app.get('/', function (req, res) {
 //   res.send(json);
