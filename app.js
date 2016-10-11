@@ -13,7 +13,6 @@ jsx.install();
 
 var config = {
   		host: 'localhost',
-			user: 'root',
 			port: 5432,
 			password: '',
 			database: 'nys_history',
@@ -37,7 +36,7 @@ pool.connect(function(err, client, done) {
     if(err) {
       return console.error('error running query', err);
     }
-    console.log(result.rows[0].number);
+    console.log(result.rows[0]);
     //output: 1 
   });
 });
