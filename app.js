@@ -1,14 +1,12 @@
 var express = require('express');
 var browserify = require('browserify');
-var React = require('react');
-var reactdom = require('react-dom')
-var jsx = require('node-jsx');
 var pg      = require('pg');
+var path = require('path');
+
 
 var client = new pg.Client();
 var app = express();
-
-jsx.install();
+app.use(express.static('public'));
 
 
 var config = {
@@ -46,11 +44,9 @@ pool.connect(function(err, client, done) {
 //   res.send(json);
 // });
 
-var Index = require('./views/index.jsx');
-
 
 app.use('/', function(req, res) {
-  res.send("hello")
+  res.sendFile(path.join(__dirname + '/views/index.html'))
 });
 
 
