@@ -2,12 +2,13 @@ var express = require('express');
 var browserify = require('browserify');
 var pg      = require('pg');
 var path = require('path');
-
+var env = require("./env.js");
 
 var client = new pg.Client();
 var app = express();
 app.use(express.static('public'));
 
+var places;
 
 var config = {
   		host: 'localhost',
@@ -35,18 +36,18 @@ pool.connect(function(err, client, done) {
       return console.error('error running query', err);
     }
     console.log(result.rows[0]);
-    //output: 1 
+
+    return places = result.rows;
   });
 });
- 
-
-// app.get('/', function (req, res) {
-//   res.send(json);
-// });
 
 
-app.use('/', function(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/views/index.html'))
+});
+
+app.get('/places', function(req, response){
+  response.send({data: JSON.stringify(places), done: true, status: 200 });
 });
 
 

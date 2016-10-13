@@ -3,9 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+  <style>
+    #mapid { height: 180px; border: 1px black solid; }
+  </style>
+
+
+
 </head>
 <body>
   <h1>Hello Kat</h1>
+  <div id="mapid"></div>
+
   
+  <script>
+    var mymap = L.map('mapid').setView([43, -74.17], 6);
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'ml242.1ko3kd97',
+      accessToken: 'pk.eyJ1IjoibWwyNDIiLCJhIjoiY2l1NzJydHNxMGoybjJvbzEzNm5oMGttdyJ9.hb3qmrRSNV_lkmgKsDyezw'
+    }).addTo(mymap);
+
+      // load GeoJSON from an external file
+      //   $.getJSON("/places",function(data){
+      //   // add GeoJSON layer to the map once the file is loaded
+      //   L.geoJson(data).addTo(map);
+      // });
+
+      // $.get('/places') but not returning geoJSON, we need to return the one column of geojson from postgres which doesn't exist yet
+
+      // var map = L.map('mapid').setView([51.505, -0.09], 13);
+
+      // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      // }).addTo(map);
+  </script>
 </body>
 </html>
