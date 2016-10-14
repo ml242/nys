@@ -47,7 +47,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/places', function(req, response){
-  response.send({data: JSON.stringify(places), done: true, status: 200 });
+  response.send({data: places, done: true, status: 200 });
 });
 
 

@@ -31,19 +31,27 @@
       accessToken: 'pk.eyJ1IjoibWwyNDIiLCJhIjoiY2l1NzJydHNxMGoybjJvbzEzNm5oMGttdyJ9.hb3qmrRSNV_lkmgKsDyezw'
     }).addTo(mymap);
 
-      // load GeoJSON from an external file
-      //   $.getJSON("/places",function(data){
-      //   // add GeoJSON layer to the map once the file is loaded
-      //   L.geoJson(data).addTo(map);
-      // });
-
       // $.get('/places') but not returning geoJSON, we need to return the one column of geojson from postgres which doesn't exist yet
 
-      // var map = L.map('mapid').setView([51.505, -0.09], 13);
+      var places = $.get('/places').done(function(){
+        
+        console.log('inda funk')
+        
+        var markers = places.responseJSON.data.map(function(row){ 
+          return {lat: row.lat,
+                  lng: row.long} 
+        })
+        console.log(markers[0])
+        
+        for ( var i = 24; i < markers.length; i ++) {
+          marker = new L.marker(markers[i]).addTo(mymap);
+        }
+        
+        
+        // console.log(markers)
+  
+      });
 
-      // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      // }).addTo(map);
   </script>
 </body>
 </html>

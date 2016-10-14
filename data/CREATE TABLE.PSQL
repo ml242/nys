@@ -1,12 +1,12 @@
 CREATE DATABASE nys_history;
 
-CREATE TABLE places (
+CREATE TABLE places(
   name char(128) NOT NULL,
   county char(64) NOT NULL,
-  registered DATE NOT NULL,
+  registered date NOT NULL,
   national_number char(64) NOT NULL,
-  long char(64) NOT NULL,
-  lat char(64) NOT NULL,
+  long decimal(11) NOT NULL,
+  lat decimal(11) NOT NULL,
   loc char(64) NOT NULL,
   id SERIAL PRIMARY KEY
 );
