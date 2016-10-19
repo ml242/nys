@@ -5,11 +5,15 @@ CREATE TABLE places(
   county char(64) NOT NULL,
   registered date NOT NULL,
   national_number char(64) NOT NULL,
-  long decimal(11) NOT NULL,
-  lat decimal(11) NOT NULL,
-  loc char(64) NOT NULL,
-  id SERIAL PRIMARY KEY
+  long double precision NOT NULL,
+  lat double precision NOT NULL,
+  the_geom geometry,
+	id SERIAL PRIMARY KEY
 );
 
-COPY places(name, county, registered, national_number, long, lat, loc)
+
+COPY places(name, county, registered, national_number, long, lat)
 FROM '/Users/mattlucas/dev/nys_historic_app/data/National_Register_of_Historic_Places.csv' DELIMITER ';' CSV;
+
+UPDATE places
+SET the_geom = ST_GeomFromText('POINT(' || long || ' ' || lat || ')',4326);
