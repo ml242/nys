@@ -1,5 +1,4 @@
 var express = require('express');
-var browserify = require('browserify');
 var pg      = require('pg');
 var path = require('path');
 var env = require("./env.js");
@@ -25,22 +24,44 @@ var config = {
 var pool = new pg.Pool(config);
 
 pool.connect(function(err, client, done) {
-  if(err) {
-    return console.error('error fetching client from pool', err);
-  }
-  // client.query('SELECT * FROM places', function(err, result) {
-  client.query('SELECT * FROM places LIMIT 50;', function(err, result) {
-    //call `done()` to release the client back to the pool 
-    done();
- 
     if(err) {
-      return console.error('error running query', err);
+        return console.error('error fetching client from pool', err);
     }
-    console.log(result.rows[0]);
+    // client.query('SELECT * FROM places', function(err, result) {
+    client.query('SELECT * FROM places LIMIT 10;', function(err, result) {
+        //call `done()` to release the client back to the pool
+        done();
 
-    return places = result.rows;
-  });
+        if(err) {
+            return console.error('error running query', err);
+        }
+        // console.log(result.rows[0]);
+        return places = result.rows;
+    });
 });
+
+var userLocation = function(data){
+
+    pool.connect(function(err, client, done) {
+        if(err) {
+            return console.error('error fetching client from pool', err);
+        }
+        // client.query('SELECT * FROM places', function(err, result) {
+        client.query('SELECT name, lat, long FROM places ORDER BY the_geom <-> st_setsrid(st_makepoint(' + data +'),4326)LIMIT 10;', function(err, result) {
+            //call `done()` to release the client back to the pool
+            done();
+
+            if(err) {
+                return console.error('error running query', err);
+            }
+            console.log(result.rows);
+
+            return places = result.rows;
+        });
+        return places;
+    });
+    return places;
+}
 
 
 app.get('/', function(req, res) {
@@ -49,6 +70,16 @@ app.get('/', function(req, res) {
 
 app.get('/places', function(req, response){
   response.send({data: places, done: true, status: 200 });
+});
+
+app.get('/home', function(req, response){
+  // response.send({data: places, done: true, status: 200 });
+    var data = req.query.userLocation;
+
+    var places = userLocation(data);
+
+    response.send({data: places, done: true, status: 200 })
+
 });
 
 

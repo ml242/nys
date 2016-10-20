@@ -24,34 +24,78 @@
 
   
   <script>
-    var mymap = L.map('mapid').setView([43, -74.17], 6);
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18,
-      id: 'ml242.1ko3kd97',
-      accessToken: 'pk.eyJ1IjoibWwyNDIiLCJhIjoiY2l1NzJydHNxMGoybjJvbzEzNm5oMGttdyJ9.hb3qmrRSNV_lkmgKsDyezw'
-    }).addTo(mymap);
 
-      // $.get('/places') but not returning geoJSON, we need to return the one column of geojson from postgres which doesn't exist yet
 
-      var places = $.get('/places').done(function(){
+      $(document).ready(function(){
         
-        console.log('inda funk')
-        
-        var markers = places.responseJSON.data.map(function(row){ 
-          return {lat: row.lat,
-                  lng: row.long,
-                  name: row.name} 
-        })
-        console.log(markers[0])
-        
-        for ( var i = 24; i < markers.length; i ++) {
-          marker = new L.marker(markers[i]).addTo(mymap);
-          marker.bindPopup(markers[i].name);
-        }
+        navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+
+        function foundLocation(position) {
+          var lat = position.coords.latitude;
+          var lon = position.coords.longitude;
+          var userLocation = lat + ', ' + lon;
           
-      });
+          console.log(userLocation)
+
+
+          var places = $.get('/home', {userLocation}).done(function(){
+            console.log('inda funk')
+
+            var markers = places.responseJSON.data.map(function(row){ 
+              return {lat: row.lat,
+                      lng: row.long,
+                      name: row.name} 
+            })
+            console.log(markers)
+            
+            for ( var i = 0; i < markers.length; i ++) {
+              marker = new L.marker(markers[i]).addTo(mymap);
+              marker.bindPopup(markers[i].name);
+            }
+                  
+          });
+
+
+        }
+        
+        function noLocation() {
+
+         var places = $.get('/places').done(function(){
+            
+            console.log('inda nofunk')
+            
+            var markers = places.responseJSON.data.map(function(row){ 
+              return {lat: row.lat,
+                      lng: row.long,
+                      name: row.name} 
+            })
+            console.log(markers[0])
+            
+            for ( var i = 24; i < markers.length; i ++) {
+              marker = new L.marker(markers[i]).addTo(mymap);
+              marker.bindPopup(markers[i].name);
+            }
+                  
+          });
+
+        }
+
+
+        var mymap = L.map('mapid').setView([43, -74.17], 6);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          maxZoom: 18,
+          id: 'ml242.1ko3kd97',
+          accessToken: 'pk.eyJ1IjoibWwyNDIiLCJhIjoiY2l1NzJydHNxMGoybjJvbzEzNm5oMGttdyJ9.hb3qmrRSNV_lkmgKsDyezw'
+        }).addTo(mymap);
+
+          // $.get('/places') but not returning geoJSON, we need to return the one column of geojson from postgres which doesn't exist yet
+
+        
+      
+      })
 
   </script>
 </body>

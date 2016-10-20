@@ -24,7 +24,7 @@ CREATE TABLE places(
   national_number char(64) NOT NULL,
   long double precision NOT NULL,
   lat double precision NOT NULL,
-  the_geom geometry,
+  the_geom geography,
 	id SERIAL PRIMARY KEY
 );
 
@@ -32,5 +32,15 @@ CREATE TABLE places(
 COPY places(name, county, registered, national_number, long, lat)
 FROM '/Users/mattlucas/dev/nys_historic_app/data/National_Register_of_Historic_Places.csv' DELIMITER ';' CSV;
 
-UPDATE places
-SET the_geom = ST_GeomFromText('POINT(' || long || ' ' || lat || ')',4326);
+
+UPDATE places SET the_geom = ST_SetSRID(ST_MakePoint(lat, long),4326);
+
+#test
+
+#SELECT name, lat, long
+#FROM places
+#ORDER BY the_geom <-> st_setsrid(st_makepoint(45.482008099999994, -73.5723521),4326)
+#LIMIT 1;
+
+
+
