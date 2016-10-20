@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>History Machine</title>
+
+  <link rel='shortcut icon' href='images/globe.png' type='image/x-icon'/ >
   
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -39,17 +41,16 @@
         
         var markers = places.responseJSON.data.map(function(row){ 
           return {lat: row.lat,
-                  lng: row.long} 
+                  lng: row.long,
+                  name: row.name} 
         })
         console.log(markers[0])
         
         for ( var i = 24; i < markers.length; i ++) {
           marker = new L.marker(markers[i]).addTo(mymap);
+          marker.bindPopup(markers[i].name);
         }
-        
-        
-        // console.log(markers)
-  
+          
       });
 
   </script>
