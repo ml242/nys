@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cp views/index.html public/index.html && NODE_ENV=development webpack && webpack-dev-server --content-base public/ --hot --inline --devtool inline-source-map --history-api-fallback"
+    "dev": "cp views/index.html public/index.html && NODE_ENV=development webpack && webpack-dev-server --content-base public/ --hot --inline --devtool inline-source-map --history-api-fallback",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
