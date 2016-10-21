@@ -83,9 +83,15 @@ app.get('/home', function(req, response){
 });
 
 
+const port = 3000;
 
-app.listen(3000, function () {
-  // var addr = server.address();
-  // console.log('NYS history coming to you live from @ http://%s:%d', addr.address, addr.port);
-  console.log('NYS history coming to you live');
+app.listen(process.env.PORT || 3000, (err) => {
+    if (err) {
+        return console.log('something bad happened', err)
+    }
+
+    console.log(`server is listening on ${port}`)
+    console.log('NYS history coming to you live');
+
 });
+
