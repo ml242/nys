@@ -21,6 +21,9 @@ var config = {
 
 // Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
 
+
+pg.defaults.ssl = true;
+
 var pool = new pg.Pool(config);
 
 pool.connect(process.env.DATABASE_URL, function(err, client, done) {
