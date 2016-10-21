@@ -9,22 +9,23 @@ app.use(express.static('public'));
 
 var places;
 
-var config = {
-    host: 'localhost',
-    port: 5432,
-    password: '',
-    database: 'nys_history',
-    multipleStatements: true,
-    max: 10,
-    idleTimeoutMills: 300000
-};
+// var config = {
+//     host: 'localhost',
+//     port: 5432,
+//     password: '',
+//     database: 'nys_history',
+//     multipleStatements: true,
+//     max: 10,
+//     idleTimeoutMills: 300000
+// };
 
 // Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
 
 
 pg.defaults.ssl = true;
 
-var pool = new pg.Pool(config);
+// var pool = new pg.Pool(config);
+var pool = new pg.Pool();
 
 pool.connect(process.env.DATABASE_URL, function(err, client, done) {
     if(err) {
