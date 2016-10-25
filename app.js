@@ -43,14 +43,35 @@ pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
     });
 });
 
-var userLocation = function(data){
-
+var userLocationTen = function(data){
     pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
         // client.query('SELECT * FROM places', function(err, result) {
         client.query('SELECT name, lat, long FROM places ORDER BY the_geom <-> st_setsrid(st_makepoint(' + data +'),4326)LIMIT 10;', function(err, result) {
+            //call `done()` to release the client back to the pool
+            done();
+
+            if(err) {
+                return console.error('error running query', err);
+            }
+            console.log(result.rows);
+
+            return places = result.rows;
+        });
+        return places;
+    });
+    return places;
+};
+
+var userLocationChrome = function(data){
+    pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
+        if(err) {
+            return console.error('error fetching client from pool', err);
+        }
+        // client.query('SELECT * FROM places', function(err, result) {
+        client.query('SELECT name, lat, long FROM places ORDER BY the_geom <-> st_setsrid(st_makepoint(' + data +'),4326)LIMIT 1;', function(err, result) {
             //call `done()` to release the client back to the pool
             done();
 
@@ -78,13 +99,18 @@ app.get('/places', function(req, response){
 app.get('/home', function(req, response){
   // response.send({data: places, done: true, status: 200 });
     var data = req.query.userLocation;
-
-    var places = userLocation(data);
-
+    var places = userLocationTen(data);
     response.send({data: places, done: true, status: 200 })
 
 });
 
+app.get('/chrome', function(req, response){
+    // response.send({data: places, done: true, status: 200 });
+    var data = req;
+    var places = userLocationChrome(data);
+    response.send({data: places, done: true, status: 200 })
+
+});
 
 const port = 3000;
 

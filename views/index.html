@@ -5,7 +5,7 @@
   <title>History Machine</title>
 
   <link rel='shortcut icon' href='images/globe.png' type='image/x-icon'/ >
-  
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
@@ -22,61 +22,61 @@
   <h1>Hello Kat</h1>
   <div id="mapid"></div>
 
-  
+
   <script>
 
 
 
       $(document).ready(function(){
-        
+
         navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
 
         function foundLocation(position) {
           var lat = position.coords.latitude;
           var lon = position.coords.longitude;
           var userLocation = lat + ', ' + lon;
-          
+
           console.log(userLocation)
 
 
           var places = $.get('/home', {userLocation}).done(function(){
             console.log('inda funk')
 
-            var markers = places.responseJSON.data.map(function(row){ 
+            var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
                       lng: row.long,
-                      name: row.name} 
+                      name: row.name}
             })
             console.log(markers)
-            
+
             for ( var i = 0; i < markers.length; i ++) {
               marker = new L.marker(markers[i]).addTo(mymap);
               marker.bindPopup(markers[i].name);
             }
-                  
+
           });
 
 
         }
-        
+
         function noLocation() {
 
          var places = $.get('/places').done(function(){
-            
+
             console.log('inda nofunk')
-            
-            var markers = places.responseJSON.data.map(function(row){ 
+
+            var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
                       lng: row.long,
-                      name: row.name} 
+                      name: row.name}
             })
             console.log(markers[0])
-            
+
             for ( var i = 24; i < markers.length; i ++) {
               marker = new L.marker(markers[i]).addTo(mymap);
               marker.bindPopup(markers[i].name);
             }
-                  
+
           });
 
         }
@@ -93,8 +93,8 @@
 
           // $.get('/places') but not returning geoJSON, we need to return the one column of geojson from postgres which doesn't exist yet
 
-        
-      
+
+
       })
 
   </script>
