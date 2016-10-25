@@ -38,8 +38,6 @@ pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
         if(err) {
             return console.error('error running query', err);
         }
-
-        cb(err, result);
         // console.log(result.rows[0]);
         return places = result.rows;
     });
