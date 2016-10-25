@@ -26,13 +26,6 @@ if (process.env.HEROKU_POSTGRESQL_ROSE_URL){
     pg.defaults.ssl = true;
 }
 
-pg.connect(function(err, client, done) {
-    client.query(text, values, function(err, result) {
-        done();
-        cb(err, result);
-    })
-});
-
 pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
     if(err) {
         return console.error('error fetching client from pool: ', err);
