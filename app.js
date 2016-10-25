@@ -45,7 +45,7 @@ pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
 
 var userLocation = function(data){
 
-    pool.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
+    pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
