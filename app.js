@@ -22,13 +22,20 @@ var config = {
 // Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
 
 
-pg.defaults.ssl = true;
+if (process.env.HEROKU_POSTGRESQL_ROSE_URL){
+    pg.defaults.ssl = true;
+}
 
-var pool = new pg.Pool(config);
+pg.connect(function(err, client, done) {
+    client.query(text, values, function(err, result) {
+        done();
+        cb(err, result);
+    })
+});
 
 pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
     if(err) {
-        return console.error('error fetching client from pool', err);
+        return console.error('error fetching client from pool: ', err);
     }
     // client.query('SELECT * FROM places', function(err, result) {
     client.query('SELECT * FROM places LIMIT 10;', function(err, result) {
@@ -38,6 +45,8 @@ pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
         if(err) {
             return console.error('error running query', err);
         }
+
+        cb(err, result);
         // console.log(result.rows[0]);
         return places = result.rows;
     });
@@ -59,12 +68,13 @@ var userLocation = function(data){
             }
             console.log(result.rows);
 
+            cb(err, result);
             return places = result.rows;
         });
         return places;
     });
     return places;
-}
+};
 
 
 app.get('/', function(req, res) {
