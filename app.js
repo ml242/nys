@@ -68,7 +68,6 @@ var userLocation = function(data){
             }
             console.log(result.rows);
 
-            cb(err, result);
             return places = result.rows;
         });
         return places;
