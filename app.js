@@ -26,7 +26,7 @@ pg.defaults.ssl = true;
 
 var pool = new pg.Pool(config);
 
-pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
     if(err) {
         return console.error('error fetching client from pool', err);
     }
@@ -45,7 +45,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client, done) {
 
 var userLocation = function(data){
 
-    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    pool.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
