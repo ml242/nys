@@ -36,18 +36,17 @@
           var lon = position.coords.longitude;
           var userLocation = lat + ', ' + lon;
 
-          console.log(userLocation)
+          console.log(userLocation);
 
 
           var places = $.get('/home', {userLocation}).done(function(){
-            console.log('inda funk')
-
+            console.log('inda funk');
             var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
                       lng: row.long,
                       name: row.name}
             })
-            console.log(markers)
+            console.log(markers);
 
             for ( var i = 0; i < markers.length; i ++) {
               marker = new L.marker(markers[i]).addTo(mymap);
@@ -62,9 +61,7 @@
         function noLocation() {
 
          var places = $.get('/places').done(function(){
-
-            console.log('inda nofunk')
-
+            console.log('inda nofunk');
             var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
                       lng: row.long,

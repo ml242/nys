@@ -3,21 +3,13 @@ var pg      = require('pg');
 var path = require('path');
 var env = require("./env.js");
 
+console.log("environment: " + env.NODE_ENV());
+
 var client = new pg.Client();
 var app = express();
 app.use(express.static('public'));
 
 var places;
-
-var config = {
-    host: 'localhost',
-    port: 5432,
-    password: '',
-    database: 'nys_history',
-    multipleStatements: true,
-    max: 10,
-    idleTimeoutMills: 300000
-};
 
 // Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
 
@@ -26,7 +18,7 @@ if (process.env.HEROKU_POSTGRESQL_ROSE_URL){
     pg.defaults.ssl = true;
 }
 
-pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
+pg.connect(env.database(), function(err, client, done) {
     if(err) {
         return console.error('error fetching client from pool: ', err);
     }
@@ -44,7 +36,7 @@ pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
 });
 
 var userLocationTen = function(data){
-    pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
+    pg.connect(env.database(), function(err, client, done) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
@@ -66,7 +58,7 @@ var userLocationTen = function(data){
 };
 
 var userLocationChrome = function(data){
-    pg.connect(process.env.HEROKU_POSTGRESQL_ROSE_URL, function(err, client, done) {
+    pg.connect(env.database(), function(err, client, done) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
@@ -119,7 +111,7 @@ app.listen(process.env.PORT || 3000, (err) => {
         return console.log('something bad happened', err)
     }
 
-    console.log(`server is listening on ${port}`)
+    console.log(`server is listening on ${port}`);
     console.log('NYS history coming to you live');
 
 });
