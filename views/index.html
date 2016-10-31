@@ -35,46 +35,44 @@
           var lat = position.coords.latitude;
           var lon = position.coords.longitude;
           var userLocation = lat + ', ' + lon;
-
           console.log(userLocation);
-
-
           var places = $.get('/home', {userLocation}).done(function(){
             console.log('inda funk');
             var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
                       lng: row.long,
                       name: row.name}
-            })
+            });
             console.log(markers);
 
+            var markerArray = [];
             for ( var i = 0; i < markers.length; i ++) {
               marker = new L.marker(markers[i]).addTo(mymap);
+
+              markerArray.push(L.marker([markers[i].lat, markers[i].lng]));
               marker.bindPopup(markers[i].name);
             }
 
+            var group = L.featureGroup(markerArray);
+            mymap.fitBounds(group.getBounds());
+
           });
-
-
         }
 
         function noLocation() {
-
-         var places = $.get('/places').done(function(){
-            console.log('inda nofunk');
-            var markers = places.responseJSON.data.map(function(row){
+         var places = $.get('/home').done(function(){
+           console.log('inda nofunk');
+           var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
                       lng: row.long,
                       name: row.name}
-            })
+            });
             console.log(markers[0])
-
             for ( var i = 24; i < markers.length; i ++) {
               marker = new L.marker(markers[i]).addTo(mymap);
               marker.bindPopup(markers[i].name);
             }
-
-          });
+         });
 
         }
 

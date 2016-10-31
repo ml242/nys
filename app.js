@@ -13,7 +13,6 @@ var places;
 
 // Plot some points with a map  https://www.youtube.com/watch?v=7mkOVjRz3tg
 
-
 if (process.env.HEROKU_POSTGRESQL_ROSE_URL){
     pg.defaults.ssl = true;
 }
@@ -30,7 +29,6 @@ pg.connect(env.database(), function(err, client, done) {
         if(err) {
             return console.error('error running query', err);
         }
-        // console.log(result.rows[0]);
         return places = result.rows;
     });
 });
@@ -49,7 +47,6 @@ var userLocationTen = function(data){
                 return console.error('error running query', err);
             }
             console.log(result.rows);
-
             return places = result.rows;
         });
         return places;
@@ -89,11 +86,9 @@ app.get('/places', function(req, response){
 });
 
 app.get('/home', function(req, response){
-  // response.send({data: places, done: true, status: 200 });
     var data = req.query.userLocation;
     var places = userLocationTen(data);
-    response.send({data: places, done: true, status: 200 })
-
+    response.send({data: places, done: true, status: 200 });
 });
 
 app.get('/chrome', function(req, response){
