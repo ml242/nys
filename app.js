@@ -1,12 +1,32 @@
 var express = require('express');
+var passport = require('passport');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+
+
 var pg      = require('pg');
-var path = require('path');
-var env = require("./env.js");
+var path    = require('path');
+var env     = require("./env.js");
+var config  = require("./config.js");
+
+
 
 console.log("environment: " + env.NODE_ENV());
 
 var client = new pg.Client();
 var app = express();
+app.use(session({
+    store: new RedisStore({
+        url: config.redisStore.url
+    }),
+    secret: config.redisStore.secret,
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
+
 app.use(express.static('public'));
 
 var places;
@@ -82,6 +102,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/places', function(req, response){
+  var data = req.query.userLocation;
+  var places = userLocationTen(data);
   response.send({data: places, done: true, status: 200 });
 });
 

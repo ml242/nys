@@ -36,6 +36,7 @@
           var lon = position.coords.longitude;
           var userLocation = lat + ', ' + lon;
           console.log(userLocation);
+
           var places = $.get('/home', {userLocation}).done(function(){
             console.log('inda funk');
             var markers = places.responseJSON.data.map(function(row){
@@ -60,7 +61,7 @@
         }
 
         function noLocation() {
-         var places = $.get('/home').done(function(){
+         var places = $.get('/places').done(function(){
            console.log('inda nofunk');
            var markers = places.responseJSON.data.map(function(row){
               return {lat: row.lat,
